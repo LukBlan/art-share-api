@@ -21,8 +21,19 @@ class ArtworkSharesController < ApplicationController
     end
   end
 
+  def favorite
+    artwork_share = ArtworkShare.find_by(id: params[:id])
+
+    if artwork_share
+      artwork_share.update(favorite: !artwork_share.favorite)
+      render json:artwork_share
+    else
+      render json: {message: "ArtworkShare doesn't exist"}
+    end
+  end
+
   private
   def artwork_share_params
-    params.require(:artwork_share).permit(:viewer_id, :artwork_id)
+    params.require(:artwork_share).permit(:viewer_id, :artwork_id, :favorite)
   end
 end
