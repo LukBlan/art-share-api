@@ -3,4 +3,6 @@ class Comment < ApplicationRecord
 
   belongs_to :user
   belongs_to :artwork
+  has_many :likes, as: :likeable
+  has_many :users_that_liked, through: :likes, source: :likeable, source_type: "User"
 end
