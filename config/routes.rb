@@ -5,6 +5,9 @@ Rails.application.routes.draw do
   end
 
   resources :artworks, only: [:show, :destroy, :create, :update] do
+    member do
+      patch "favorite"
+    end
     resources :comments, only: [:index]
   end
 

@@ -16,6 +16,17 @@ class ArtworksController < ApplicationController
     end
   end
 
+  def favorite
+    artwork = Artwork.find_by(artist_id: params[:artwork][:user_id], id: params[:id])
+
+    if artwork
+      artwork.update(favorite: !artwork.favorite)
+      render json: artwork
+    else
+      render json: {message: "artwork not found"}, status: :unprocessable_content
+    end
+  end
+
   def destroy
     artwork = Artwork.find_by(id: params[:id])
 
@@ -50,6 +61,6 @@ class ArtworksController < ApplicationController
 
   private
   def artworks_params
-    params.require(:artwork).permit(:title, :image_url, :artist_id)
+    params.require(:artwork).permit(:title, :image_url, :artist_id, :favorite)
   end
 end
