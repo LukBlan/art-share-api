@@ -10,9 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_22_210124) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_23_194603) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "artwork_collections", force: :cascade do |t|
+    t.integer "artwork_id", null: false
+    t.integer "collection_id", null: false
+    t.index ["artwork_id", "collection_id"], name: "index_artwork_collections_on_artwork_id_and_collection_id"
+    t.index ["artwork_id"], name: "index_artwork_collections_on_artwork_id"
+    t.index ["collection_id"], name: "index_artwork_collections_on_collection_id"
+  end
 
   create_table "artwork_shares", force: :cascade do |t|
     t.integer "viewer_id", null: false
@@ -29,6 +37,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_22_210124) do
     t.integer "artist_id", null: false
     t.boolean "favorite", null: false
     t.index ["artist_id", "title"], name: "index_artworks_on_artist_id_and_title", unique: true
+  end
+
+  create_table "collections", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "name"
+    t.index ["user_id"], name: "index_collections_on_user_id"
   end
 
   create_table "comments", force: :cascade do |t|
@@ -50,6 +64,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_22_210124) do
     t.string "username", null: false
   end
 
+  add_foreign_key "artwork_collections", "artworks"
+  add_foreign_key "artwork_collections", "collections"
   add_foreign_key "artwork_shares", "artworks"
   add_foreign_key "artwork_shares", "users", column: "viewer_id"
   add_foreign_key "artworks", "users", column: "artist_id"

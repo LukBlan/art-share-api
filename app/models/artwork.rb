@@ -1,5 +1,5 @@
 class Artwork < ApplicationRecord
-  validates :title, :artist_id, :image_url, :favorite, presence: true
+  validates :title, :artist_id, :image_url, presence: true
   validates :artist_id, uniqueness: { scope: :title }
 
   has_many :shares, foreign_key: :artwork_id, class_name: "ArtworkShare", dependent: :destroy
